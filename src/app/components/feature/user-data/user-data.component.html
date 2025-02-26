@@ -1,0 +1,44 @@
+<div class="user-container">
+    <!-- Header Section -->
+    <div class="header">
+        <h2 class="title">{{ userForm.value.username }}</h2>
+        <div class="button-container">
+            <button mat-raised-button
+                    color="primary"
+                    class="admin-btn"
+                    (click)="allClients()">
+                Klientët
+            </button>
+            <button mat-raised-button
+                    color="warn"
+                    class="logout-btn"
+                    (click)="logout()">
+                Dil
+            </button>
+        </div>
+    </div>
+
+    <!-- User Info Table -->
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>Emri</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ userForm.value.username }}</td>
+                <td>{{ userForm.value.email }}</td>
+                <td>
+                    <button mat-icon-button
+                            color="accent"
+                            (click)="updateUserInfo()">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

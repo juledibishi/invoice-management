@@ -1,0 +1,27 @@
+<div class="product-container">
+    <div class="product-form">
+        <h2 class="title">Përditsoni të dhënat tuaja!</h2>
+        <form [formGroup]="userForm">
+            <div class="form-grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Name</mat-label>
+                    <input matInput
+                           formControlName="username" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput
+                           formControlName="email" />
+                </mat-form-field>
+            </div>
+
+            <div class="button-container">
+                <button mat-raised-button
+                        color="primary"
+                        (click)="saveClient()">
+                    Ruaj
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="container"
+     #invoice>
+    <section class="jumbotron">
+        <div class="left-side">
+            <h2>Oferta për:</h2>
+            <p>Emri: <b>{{ clientData.name }}</b></p>
+            <p>Mbiemri: <b>{{ clientData.surname }}</b></p>
+            <p>Telefoni: <b>{{ clientData.phone }}</b></p>
+        </div>
+
+        <div class="right-side">
+            <img src="assets/img/romebel-1.png"
+                 alt="Company Logo"
+                 class="company-logo" />
+            <p><strong>Data:</strong> {{ today | date: 'dd/MM/yyyy' }}</p>
+        </div>
+    </section>
+
+    <form [formGroup]="invoiceForm">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Artikulli</th>
+                    <th>Përshkrimi</th>
+                    <th>Sasia</th>
+                    <th>Çmimi</th>
+                    <th>Gjithësej</th>
+                </tr>
+            </thead>
+            <tbody formArrayName="items">
+                <tr *ngFor="let item of items.controls; let i = index"
+                    [formGroupName]="i">
+                    <td>
+                        <input type="text"
+                               formControlName="name"
+                               class="form-control" />
+                    </td>
+                    <td>
+                        <input type="text"
+                               formControlName="description"
+                               class="form-control" />
+                    </td>
+                    <td>
+                        <div class="d-flex">
+                            <input type="number"
+                                   formControlName="qty"
+                                   class="form-control" />
+                            <select formControlName="unit"
+                                    class="form-control">
+                                <option value="pcs">pcs</option>
+                                <option value="kg">kg</option>
+                                <option value="m">m</option>
+                                <option value="liter">liter</option>
+                                <option value="m2">m²</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="number"
+                               formControlName="price"
+                               class="form-control" />
+                    </td>
+                    <td class="total-cell">
+                        {{ item.get('qty')?.value * item.get('price')?.value | number:'1.2-2' }} €
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td class="total-label">Total :</td>
+                    <td>{{ getTotal() | number:'1.2-2' }} €</td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <br>
+    <div class="description">
+        <span>Përshkrim</span><br>
+        <textarea name=""></textarea>
+    </div>
+    <br><br>
+    <div class="signature">
+        <div>
+            <span>Nënshkrim</span><br><br><br>
+            <span>_______________________</span>
+        </div>
+        <div>
+            <span>Nënshkrim</span><br><br><br>
+            <span>_______________________</span>
+        </div>
+    </div>
+</div>

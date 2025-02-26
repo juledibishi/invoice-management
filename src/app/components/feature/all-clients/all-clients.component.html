@@ -1,0 +1,116 @@
+<div class="product-container">
+    <!-- Header Section -->
+    <div class="header">
+        <h2 class="title">Të gjithë klientët</h2>
+        <div class="button-container">
+            <button mat-raised-button
+                    color="primary"
+                    class="admin-btn"
+                    (click)="admin()">Admin</button>
+            <button mat-raised-button
+                    color="warn"
+                    class="logout-btn"
+                    (click)="logout()">Dil</button>
+        </div>
+    </div>
+
+    <!-- Statistic Cards -->
+    <div class="stats-container">
+
+        <div class="stat-card new-customers">
+            <div class="card-header">
+                <span class="card-title">Numri i Klientëve</span>
+                <mat-icon>group</mat-icon>
+            </div>
+            <h3>{{this.clients.length}}</h3>
+            <div class="progress-bar">
+                <div class="progress"
+                     style="width: 100%; background-color: #1e88e5;"></div>
+            </div>
+        </div>
+
+        <div class="stat-card earning">
+            <div class="card-header">
+                <span class="card-title">Shuma Totale e Pagesave</span>
+            </div>
+            <h3>€{{paymentCalculate()}}</h3>
+            <div class="progress-bar">
+                <div class="progress"
+                     style="width: 100%; background-color:  #43a047;"></div>
+            </div>
+
+        </div>
+
+        <div class="stat-card earning">
+            <div class="card-header">
+                <span class="card-title">Shuma Totale e Borxheve</span>
+            </div>
+            <h3>€{{debtCalculate()}}</h3>
+            <div class="progress-bar">
+                <div class="progress"
+                     style="width: 100%; background-color: #fb0000;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="add-button">
+        <button mat-fab
+                color="primary"
+                (click)="addClient()">
+            <mat-icon>add</mat-icon>
+        </button>
+        <mat-form-field class="example-full-width">
+            <input matInput
+                   placeholder="Emri i Klientit"
+                   [(ngModel)]="searchText">
+        </mat-form-field>
+    </div>
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>Emri</th>
+                <th>Mbiemri</th>
+                <th>Pagesa (€)</th>
+                <th>Borxhi (€)</th>
+                <th>Telefoni</th>
+                <th>Përshkrim</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let client of clients | filter:searchText">
+                <td style="background-color: #ffcccb;"
+                    *ngIf="client.debt !== '0'">
+                    {{ client.name }}
+                </td>
+                <td style="background-color: #b4f8c8;"
+                    *ngIf="client.debt === '0'">
+                    {{ client.name }}
+                </td>
+                <td>{{ client.surname }}</td>
+                <td>{{ client.payment }}</td>
+                <td>{{ client.debt }}</td>
+                <td>{{ client.phone }}</td>
+                <td>{{ client.description }}</td>
+                <td>
+                    <button mat-icon-button
+                            color="primary"
+                            (click)="editClient(client.id!)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button
+                            color="primary"
+                            (click)="openInvoice(client.id!)">
+                        <mat-icon>description</mat-icon>
+                    </button>
+                    <button mat-icon-button
+                            color="warn"
+                            (click)="deleteClient(client.id!)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

@@ -1,0 +1,42 @@
+/* Center the login card */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+/* Card styling */
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Full-width elements */
+.full-width {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+/* Center title */
+.text-center {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.register-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.register-link {
+    color: #1976d2;
+    /* Angular Material primary color */
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}

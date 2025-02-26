@@ -1,0 +1,53 @@
+/* Container to center everything */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+/* Card styling */
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background: white;
+}
+
+/* Form fields should be full width */
+.full-width {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+/* Center the title */
+.text-center {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Center the login redirect */
+.redirect-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.redirect-container span {
+    font-size: 14px;
+    color: #666;
+}
+
+.redirect-link {
+    color: #1976d2;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Button spacing */
+button {
+    margin-bottom: 10px;
+}

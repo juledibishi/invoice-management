@@ -1,0 +1,15 @@
+<div class="main-style">
+    <h2 mat-dialog-title>Fshij Klientin</h2>
+
+    <mat-dialog-content>
+        <p>A jeni i sigurt që doni të fshini klientin <strong>{{ data.name }}</strong>?</p>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button
+                (click)="onCancel()">Jo</button>
+        <button mat-raised-button
+                color="warn"
+                (click)="onConfirm()">Po</button>
+    </mat-dialog-actions>
+</div>

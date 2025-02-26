@@ -1,0 +1,104 @@
+@if(this.data){
+<div class="product-container">
+    <div class="product-form">
+        <h2 class="title">Përditso të dhënat e klientit</h2>
+        <form [formGroup]="clientForm">
+            <div class="form-grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Emri i Klientit</mat-label>
+                    <input matInput
+                           formControlName="name" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Mbiemri</mat-label>
+                    <input matInput
+                           formControlName="surname" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Borxhi i mbetur</mat-label>
+                    <input matInput
+                           formControlName="debt"
+                           type="number" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Pages</mat-label>
+                    <input matInput
+                           formControlName="payment"
+                           type="number" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Telefoni</mat-label>
+                    <input matInput
+                           formControlName="phone" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Përshkrimi</mat-label>
+                    <input matInput
+                           formControlName="description">
+                </mat-form-field>
+            </div>
+
+            <div class="button-container">
+                <button mat-raised-button
+                        color="primary"
+                        (click)="editClient()">
+                    Ruaj
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+}
+
+@else{
+<div class="product-container">
+    <div class="product-form">
+        <h2 class="title">Shto të dhënat e klientit</h2>
+        <form [formGroup]="clientForm">
+            <div class="form-grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>Emri</mat-label>
+                    <input matInput
+                           formControlName="name" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Mbiemri</mat-label>
+                    <input matInput
+                           formControlName="surname" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Borxhi i mbetur</mat-label>
+                    <input matInput
+                           formControlName="debt"
+                           type="number" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Pages</mat-label>
+                    <input matInput
+                           formControlName="payment"
+                           type="number" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Telefoni</mat-label>
+                    <input matInput
+                           formControlName="phone" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Përshkrimi</mat-label>
+                    <input matInput
+                           formControlName="description">
+                </mat-form-field>
+            </div>
+
+            <div class="button-container">
+                <button mat-raised-button
+                        color="primary"
+                        (click)="addClient()">
+                    Ruaj
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+}
