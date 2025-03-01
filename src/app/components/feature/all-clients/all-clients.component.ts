@@ -79,6 +79,7 @@ export class AllClientsComponent implements OnInit {
 
       this.dao.getClients().subscribe(client => {
         this.clients = client;
+        this.filterClientsByYear();
       })
     })
   }

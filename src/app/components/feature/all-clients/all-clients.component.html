@@ -22,7 +22,7 @@
                 <span class="card-title">Numri i Klientëve</span>
                 <mat-icon>group</mat-icon>
             </div>
-            <h3>{{clientCount}}</h3>
+            <h3>{{clientCount }}</h3>
             <div class="progress-bar">
                 <div class="progress"
                      style="width: 100%; background-color: #1e88e5;"></div>
@@ -33,7 +33,7 @@
             <div class="card-header">
                 <span class="card-title">Shuma Totale e Pagesave</span>
             </div>
-            <h3>€{{paymentCalculate()}}</h3>
+            <h3>€{{paymentCalculate() | number:'1.2-2'}}</h3>
             <div class="progress-bar">
                 <div class="progress"
                      style="width: 100%; background-color:  #43a047;"></div>
@@ -45,7 +45,7 @@
             <div class="card-header">
                 <span class="card-title">Shuma Totale e Borxheve</span>
             </div>
-            <h3>€{{debtCalculate()}}</h3>
+            <h3>€{{debtCalculate() | number:'1.2-2'}}</h3>
             <div class="progress-bar">
                 <div class="progress"
                      style="width: 100%; background-color: #fb0000;"></div>
@@ -103,7 +103,7 @@
                     *ngIf="client.debt !== '0'">
                     {{ client.name }}
                 </td>
-                <td style="background-color: #b4f8c8;"
+                <td style="background-color: #ffffff;"
                     *ngIf="client.debt === '0'">
                     {{ client.name }}
                 </td>
