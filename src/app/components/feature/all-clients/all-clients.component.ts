@@ -15,6 +15,9 @@ import { HelperService } from '../../../service/helper.service';
 import { DeleteClientComponent } from '../delete-client/delete-client.component';
 import { FilterPipe } from "../../../pipes/filter.pipe";
 import { InvoiceDialogComponent } from '../invoice-dialog/invoice-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
+import { FilterDebtPipe } from "../../../pipes/filter-debt.pipe";
+import { FilterByYearPipe } from "../../../pipes/filter-by-year.pipe";
 @Component({
   selector: 'app-all-products',
   standalone: true,
@@ -28,7 +31,10 @@ import { InvoiceDialogComponent } from '../invoice-dialog/invoice-dialog.compone
     MatTableModule,
     FormsModule,
     CommonModule,
-    FilterPipe
+    MatSelectModule,
+    FilterPipe,
+    FilterDebtPipe,
+    FilterByYearPipe
   ],
   templateUrl: './all-clients.component.html',
   styleUrl: './all-clients.component.scss'
@@ -43,16 +49,23 @@ export class AllClientsComponent implements OnInit {
   searchText!: string;
   paymentResult!: string;
   debtResult!: string;
+  filterType: 'all' | 'debt' | 'paid' = 'all';
+  selectedYear: string = 'all';
+  filteredClients: any[] = [];
 
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getAllClients();
+    const currentYear = new Date().getFullYear().toString();
+    this.selectedYear = currentYear;
+
   }
 
   getAllClients() {
     this.dao.getClients().subscribe(client => {
       this.clients = client;
+      this.filterClientsByYear();
     })
   }
 
@@ -103,12 +116,31 @@ export class AllClientsComponent implements OnInit {
     })
   }
 
-  paymentCalculate() {
-    return this.clients.reduce((total, client) => total + Number(client.payment), 0)
+  paymentCalculate(): number {
+    return this.filteredClients.reduce((total, client) => total + parseFloat(client.payment), 0);
   }
 
-  debtCalculate() {
-    return this.clients.reduce((total, client) => total + Number(client.debt), 0)
+  debtCalculate(): number {
+    return this.filteredClients.reduce((total, client) => total + parseFloat(client.debt), 0);
+  }
+
+  onYearChange() {
+    this.filterClientsByYear();
+  }
+
+  filterClientsByYear() {
+    if (this.selectedYear === 'all') {
+      this.filteredClients = [...this.clients];
+    } else {
+      this.filteredClients = this.clients.filter(client => {
+        const clientYear = new Date(client.created_at!).getFullYear();
+        return clientYear.toString() === this.selectedYear;
+      });
+    }
+  }
+
+  get clientCount(): number {
+    return this.filteredClients.length;
   }
 
   logout() {

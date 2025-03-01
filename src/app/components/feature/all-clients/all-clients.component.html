@@ -22,7 +22,7 @@
                 <span class="card-title">Numri i Klientëve</span>
                 <mat-icon>group</mat-icon>
             </div>
-            <h3>{{this.clients.length}}</h3>
+            <h3>{{clientCount}}</h3>
             <div class="progress-bar">
                 <div class="progress"
                      style="width: 100%; background-color: #1e88e5;"></div>
@@ -64,6 +64,25 @@
                    placeholder="Emri i Klientit"
                    [(ngModel)]="searchText">
         </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Filtrimi</mat-label>
+            <mat-select [(value)]="filterType">
+                <mat-option value="all">Të gjithë</mat-option>
+                <mat-option value="debt">Klientë me Borxh</mat-option>
+                <mat-option value="paid">Klientë që kanë paguar</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Filtrimi nga Viti</mat-label>
+            <mat-select [(value)]="selectedYear"
+                        (selectionChange)="onYearChange()">
+                <mat-option value="2024">2024</mat-option>
+                <mat-option value="2025">2025</mat-option>
+                <mat-option value="all">Të gjithë</mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
     <table class="product-table">
         <thead>
@@ -74,11 +93,12 @@
                 <th>Borxhi (€)</th>
                 <th>Telefoni</th>
                 <th>Përshkrim</th>
+                <th>Krijuar më</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let client of clients | filter:searchText">
+            <tr *ngFor="let client of clients | filter:searchText | filterDebt:filterType | filterByYear:selectedYear ">
                 <td style="background-color: #ffcccb;"
                     *ngIf="client.debt !== '0'">
                     {{ client.name }}
@@ -88,11 +108,13 @@
                     {{ client.name }}
                 </td>
                 <td>{{ client.surname }}</td>
-                <td>{{ client.payment }}</td>
-                <td>{{ client.debt }}</td>
-                <td>{{ client.phone }}</td>
-                <td>{{ client.description }}</td>
-                <td>
+                <td>{{ client.payment | number:'1.2-2'}}</td>
+                <td>{{ client.debt | number:'1.2-2'}}</td>
+                <td> <a [href]="'tel:' + client.phone"
+                       style="text-decoration: none;color:black">{{ client.phone }}</a></td>
+                <td class="description-cell">{{ client.description }}</td>
+                <td>{{ client.created_at | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td class="icons-style">
                     <button mat-icon-button
                             color="primary"
                             (click)="editClient(client.id!)">

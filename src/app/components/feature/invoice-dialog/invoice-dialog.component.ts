@@ -98,9 +98,9 @@ export class InvoiceDialogComponent implements OnInit {
 
        <!-- Footer Section -->
     <footer class="footer">
-      <p><strong>Tel:</strong> 123123123</p>
-      <p><strong>Email:</strong> company@gmail.com</p>
-      <p><strong>Address:</strong> Tetovo1232</p>
+      <p><strong>Tel:</strong>071 840 085 / 071 784 886</p>
+      <p><strong>Email:</strong> romebel1998@gmail.com</p>
+      <p><strong>Address:</strong> Gostivarska, Tetovo 1220</p>
     </footer>
     `;
 
@@ -159,6 +159,9 @@ export class InvoiceDialogComponent implements OnInit {
               }
 
                .footer {
+                display:flex;
+                justify-content:center;
+                gap:30px;
                 margin-top: 40px;
                 padding-top: 10px;
                 border-top: 1px solid #ccc;

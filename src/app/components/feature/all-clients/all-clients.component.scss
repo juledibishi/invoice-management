@@ -81,7 +81,12 @@
 }
 
 .product-table td {
+    padding: 8px;
+    text-align: left;
+    font-size: 14px;
     border: 1px solid #ddd;
+    white-space: normal;
+    word-break: break-word;
 }
 
 /* Reduce button size in table */
@@ -110,6 +115,17 @@
     gap: 10px;
 }
 
+.icons-style {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.description-cell {
+    width: 150px;
+    word-break: break-word;
+    white-space: normal;
+}
 
 @media (max-width: 768px) {
     .product-container {

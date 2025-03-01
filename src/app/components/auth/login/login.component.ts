@@ -40,7 +40,7 @@ export class LoginComponent {
     this.dao.login(rawForm.email, rawForm.password)
       .subscribe((result) => {
         if (result.error) {
-          this.toast.danger(result.error.message);
+          this.toast.danger('Email ose fjalëkalimi janë të pasakta!');
         } else {
           this.router.navigateByUrl('user-data')
         }
