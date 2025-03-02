@@ -75,6 +75,33 @@ body {
     background-color: #f2f2f2;
 }
 
+/* Table Discount */
+/* Table Discount */
+.discount-container {
+    margin-top: 20px;
+    /* Space between item table and discount table */
+    display: block;
+    /* Changed from flex to block */
+}
+
+.table-discount {
+    width: 100%;
+    /* Ensures full width usage */
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table-discount td {
+    padding: 8px;
+    text-align: right;
+}
+
+.total-label {
+    font-weight: bold;
+    text-align: left;
+}
+
+
 /* Form Controls */
 .form-control {
     width: 100%;
@@ -115,12 +142,13 @@ body {
     width: 50%;
 }
 
-/* Signature */
-.signature {
+.print-button {
+    text-align: right;
+}
+
+.style-des-discount {
     display: grid;
     grid-template-columns: auto auto;
-    justify-content: center;
-    gap: 35rem;
 }
 
 /* Mobile Adjustments (max-width: 768px) */

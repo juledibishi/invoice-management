@@ -85,7 +85,7 @@
     text-align: left;
     font-size: 14px;
     border: 1px solid #ddd;
-    white-space: normal;
+    // white-space: normal;
     word-break: break-word;
 }
 
@@ -113,12 +113,6 @@
 .button-container {
     display: flex;
     gap: 10px;
-}
-
-.icons-style {
-    display: flex;
-    gap: 30px;
-    justify-content: center;
 }
 
 .description-cell {

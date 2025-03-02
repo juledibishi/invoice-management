@@ -13,11 +13,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ClientDialogComponent } from '../client-dialog/client-dialog.component';
 import { HelperService } from '../../../service/helper.service';
 import { DeleteClientComponent } from '../delete-client/delete-client.component';
-import { FilterPipe } from "../../../pipes/filter.pipe";
 import { InvoiceDialogComponent } from '../invoice-dialog/invoice-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
-import { FilterDebtPipe } from "../../../pipes/filter-debt.pipe";
-import { FilterByYearPipe } from "../../../pipes/filter-by-year.pipe";
+
 @Component({
   selector: 'app-all-products',
   standalone: true,
@@ -31,10 +29,7 @@ import { FilterByYearPipe } from "../../../pipes/filter-by-year.pipe";
     MatTableModule,
     FormsModule,
     CommonModule,
-    MatSelectModule,
-    FilterPipe,
-    FilterDebtPipe,
-    FilterByYearPipe
+    MatSelectModule
   ],
   templateUrl: './all-clients.component.html',
   styleUrl: './all-clients.component.scss'
@@ -45,27 +40,27 @@ export class AllClientsComponent implements OnInit {
   fb = inject(FormBuilder);
   dao = inject(DaoComunicatorService)
   clients: IClient[] = []
-  clientId!: string;
-  searchText!: string;
-  paymentResult!: string;
-  debtResult!: string;
-  filterType: 'all' | 'debt' | 'paid' = 'all';
-  selectedYear: string = 'all';
-  filteredClients: any[] = [];
+  clientId: string = '';
+  searchText: string = '';
+  paymentResult: string = '';
+  debtResult: string = '';
+  filterType: 'all' | 'debt' = 'all';
+  selectedYear: string = '';
+  filteredClients: IClient[] = [];
 
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getAllClients();
-    const currentYear = new Date().getFullYear().toString();
-    this.selectedYear = currentYear;
-
+    this.paymentCalculate()
+    this.debtCalculate()
   }
 
   getAllClients() {
     this.dao.getClients().subscribe(client => {
+      this.filteredClients = [];
       this.clients = client;
-      this.filterClientsByYear();
+      this.filteredClients = [...client]
     })
   }
 
@@ -76,11 +71,7 @@ export class AllClientsComponent implements OnInit {
       data: clientData
     })
     dialogRef.afterClosed().subscribe(() => {
-
-      this.dao.getClients().subscribe(client => {
-        this.clients = client;
-        this.filterClientsByYear();
-      })
+      this.getAllClients();
     })
   }
 
@@ -89,9 +80,7 @@ export class AllClientsComponent implements OnInit {
       data: clientId
     })
     dialogRef.afterClosed().subscribe(() => {
-      this.dao.getClients().subscribe(client => {
-        this.clients = client;
-      })
+      this.getAllClients();
     })
   }
 
@@ -111,37 +100,37 @@ export class AllClientsComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(() => {
-      this.dao.getClients().subscribe(client => {
-        this.clients = client;
-      })
+      this.getAllClients();
     })
   }
 
   paymentCalculate(): number {
-    return this.filteredClients.reduce((total, client) => total + parseFloat(client.payment), 0);
+    return this.filteredClients.reduce((total, client) => total + client.payment, 0);
   }
 
   debtCalculate(): number {
-    return this.filteredClients.reduce((total, client) => total + parseFloat(client.debt), 0);
+    return this.filteredClients.reduce((total, client) => total + client.debt, 0);
   }
 
-  onYearChange() {
-    this.filterClientsByYear();
-  }
+  filterClients() {
 
-  filterClientsByYear() {
-    if (this.selectedYear === 'all') {
-      this.filteredClients = [...this.clients];
-    } else {
-      this.filteredClients = this.clients.filter(client => {
-        const clientYear = new Date(client.created_at!).getFullYear();
-        return clientYear.toString() === this.selectedYear;
-      });
-    }
-  }
+    this.filteredClients = this.clients.filter(client => {
+      const clientYear = new Date(client.date_created!).getFullYear();
 
-  get clientCount(): number {
-    return this.filteredClients.length;
+      const year = (clientYear.toString() === this.selectedYear);
+
+      const debt = this.filterType === 'all' ? client.debt >= 0 : client.debt > 0;
+
+      const name = (client.name.toLowerCase().includes(this.searchText.toLowerCase()));
+
+      if (this.selectedYear) {
+        return year && debt && name;
+      }
+      return debt && name;
+    });
+
+    this.paymentCalculate();
+    this.debtCalculate();
   }
 
   logout() {

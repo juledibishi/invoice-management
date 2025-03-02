@@ -32,10 +32,11 @@ export class ClientDialogComponent implements OnInit {
   clientForm = this.fb.nonNullable.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    debt: ['', Validators.required],
-    payment: ['', Validators.required],
+    debt: [0, Validators.required],
+    payment: [0, Validators.required],
     surname: ['', Validators.required],
-    phone: ['', Validators.required]
+    phone: ['', Validators.required],
+    date_created: ['', Validators.required]
   })
 
   constructor(private toast: NgToastService, @Inject(MAT_DIALOG_DATA) public data: IClient | null, public dialogRef: MatDialogRef<ClientDialogComponent>) { }
@@ -48,6 +49,7 @@ export class ClientDialogComponent implements OnInit {
         payment: this.data.payment,
         surname: this.data.surname,
         phone: this.data.phone,
+        date_created: this.data.date_created
       })
     }
   }
@@ -55,9 +57,10 @@ export class ClientDialogComponent implements OnInit {
   addClient() {
     const rawForm = this.clientForm.getRawValue();
     if (this.clientForm.valid) {
-      this.dao.saveClient(rawForm)
-      this.dialogRef.close(rawForm)
-      this.toast.success('Klienti u regjistrua me sukses!')
+      this.dao.saveClient(rawForm).then(() => {
+        this.dialogRef.close(rawForm)
+        this.toast.success('Klienti u regjistrua me sukses!')
+      })
     }
   }
 
@@ -70,8 +73,6 @@ export class ClientDialogComponent implements OnInit {
       }
 
       this.dao.updateClient(updateClient).then(({ data, error }) => {
-        console.log(data);
-
         if (error) {
           console.error('Error updating client:', error);
           this.toast.warning('Ndodhi një gabim gjatë përditësimit të klientit!');

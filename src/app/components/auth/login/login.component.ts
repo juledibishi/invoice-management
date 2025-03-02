@@ -42,6 +42,14 @@ export class LoginComponent {
         if (result.error) {
           this.toast.danger('Email ose fjalëkalimi janë të pasakta!');
         } else {
+          if (rawForm.email === 'juled.ibishi@gmail.com') {
+            this.dao.tableName.set('BujaminClient')
+            localStorage.setItem('client', 'BujaminClient')
+          }
+          if (rawForm.email === 'juled.ibishi@hotmail.com') {
+            this.dao.tableName.set('NuriClient')
+            localStorage.setItem('client', 'NuriClient')
+          }
           this.router.navigateByUrl('user-data')
         }
       })

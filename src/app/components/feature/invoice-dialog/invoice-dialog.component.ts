@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IClient } from '../../../models/client.model';
 
 @Component({
   selector: 'app-invoice-dialog',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './invoice-dialog.component.html',
   styleUrl: './invoice-dialog.component.scss'
 })
@@ -17,6 +17,10 @@ export class InvoiceDialogComponent implements OnInit {
   today: Date = new Date();
   @ViewChild('invoice') invoiceElement!: ElementRef;
 
+  totalPrice: number = 0;
+  totalPriceAfterDiscount: number = 0;
+  discountForm = new FormControl(0);
+  summary = new FormControl('');
 
   constructor(private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: IClient | null, public dialogRef: MatDialogRef<InvoiceDialogComponent>) {
     this.invoiceForm = this.fb.group({
@@ -26,6 +30,10 @@ export class InvoiceDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.clientData = this.data!;
+
+    this.invoiceForm.valueChanges.subscribe(() => {
+      this.calculateTotalPrice();
+    })
   }
 
   get items(): FormArray {
@@ -38,7 +46,34 @@ export class InvoiceDialogComponent implements OnInit {
       today: new Date().toLocaleDateString(),
       items: this.invoiceForm.value.items,
       total: this.getTotal(),
+      discount: this.discountForm.value,
+      totalPriceAfterDiscount: this.totalPriceAfterDiscount,
+      summary: this.summary.value
     };
+    let discountRow = '';
+    let summaryRow = '';
+    if (invoiceData.discount) {
+      discountRow = `
+        <tr>
+          <td colspan="3"></td>
+          <td class="total-label">Zbritje (%) :</td>
+          <td>${invoiceData.discount} %</td>
+        </tr>
+        <tr>
+          <td colspan="3"></td>
+          <td class="total-label">Totali pas Zbritjes:</td>
+          <td>${invoiceData.totalPriceAfterDiscount} €</td>
+        </tr>
+      `;
+    }
+
+    if (invoiceData.summary) {
+      summaryRow = `
+     <div class="textarea">
+      <textare>${invoiceData.summary}</textare>
+     </div>
+        `;
+    }
 
     const printContents = `
       <div class="container">
@@ -81,9 +116,12 @@ export class InvoiceDialogComponent implements OnInit {
                     <td class="total-label">Total :</td>
                     <td>${Number(invoiceData.total).toFixed(2)} €</td>
                 </tr>
+                
+                ${discountRow}
             </tbody>
         </table>
-  
+        <br>
+                ${summaryRow}
         <div class="signature">
             <div>
                 <span>Nënshkrim</span><br><br><br>
@@ -98,7 +136,7 @@ export class InvoiceDialogComponent implements OnInit {
 
        <!-- Footer Section -->
     <footer class="footer">
-      <p><strong>Tel:</strong>071 840 085 / 071 784 886</p>
+      <p><strong>Tel:</strong>070 603 197 / 071 784 886</p>
       <p><strong>Email:</strong> romebel1998@gmail.com</p>
       <p><strong>Address:</strong> Gostivarska, Tetovo 1220</p>
     </footer>
@@ -168,7 +206,15 @@ export class InvoiceDialogComponent implements OnInit {
                 text-align: center;
                 font-size: 14px;
             }
-            </style>
+            textarea {
+              width: 50%; /* Ensures it takes full width */
+              max-width: 50%; /* Prevents it from overflowing */
+              word-wrap: break-word;
+              overflow-wrap: break-word;
+              white-space: pre-wrap; /* Ensures proper text wrapping */
+              resize: vertical; /* Allows resizing vertically */
+            }
+          </style>
           </head>
           <body onload="window.print();">
             ${printContents}
@@ -193,15 +239,19 @@ export class InvoiceDialogComponent implements OnInit {
 
   addItem(): void {
     this.items.push(this.createItem());
+    this.calculateTotalPrice();
   }
 
   removeItem(index: number): void {
     if (this.items.length > 1) {
       this.items.removeAt(index);
+      this.calculateTotalPrice();
     }
   }
 
   getTotal(): number {
+    console.log(123);
+
     return this.items.controls.reduce((total, item) => {
       const qty = item.get('qty')?.value || 0;
       const price = item.get('price')?.value || 0;
@@ -209,4 +259,17 @@ export class InvoiceDialogComponent implements OnInit {
     }, 0);
   }
 
+  calculateTotalPrice() {
+    this.totalPrice = this.getTotal();
+    const valueAfterDiscount = this.calculateDiscount(this.discountForm.value!, this.totalPrice)
+    this.totalPriceAfterDiscount = this.totalPrice - valueAfterDiscount;
+
+    if (!this.discountForm.value) {
+      this.totalPriceAfterDiscount = 0;
+    }
+  }
+
+  calculateDiscount(partialValue: number, totalValue: number) {
+    return (totalValue * partialValue) / 100;
+  }
 }

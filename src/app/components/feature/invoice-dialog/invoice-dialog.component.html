@@ -69,20 +69,41 @@
                 </tr>
             </tbody>
         </table>
-    </form><br>
+    </form>
+    <br>
+    <div class="style-des-discount">
+        <div>
+            <span>Përshkrim</span><br>
+            <textarea rows="4"
+                      class="form-control"
+                      [formControl]="summary">
+                </textarea>
+        </div>
+        <div class="discount-container">
+            <table class="table-discount table-hover">
+                <tr>
+                    <td class="total-label">Zbritje (%) :</td>
+                    <td>
+                        <input type="number"
+                               min="0"
+                               max="100"
+                               [formControl]="discountForm"
+                               (input)="calculateTotalPrice()"
+                               class="form-control"
+                               placeholder="Enter discount %" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="total-label">Totali pas Zbritjes :</td>
+                    <td>{{ totalPriceAfterDiscount }} €</td>
+                </tr>
+            </table>
+        </div>
 
-    <div class="signature">
-        <div>
-            <span>Nënshkrim</span><br><br><br>
-            <span>_______________________</span>
-        </div>
-        <div>
-            <span>Nënshkrim</span><br><br><br>
-            <span>_______________________</span>
-        </div>
+
     </div>
 
-    <div class="text-center mt-4">
+    <div class="print-button">
         <button class="btn btn-primary"
                 (click)="printInvoice()">Print</button>
     </div>

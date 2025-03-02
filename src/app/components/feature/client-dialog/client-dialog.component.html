@@ -36,6 +36,12 @@
                     <input matInput
                            formControlName="description">
                 </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Krijuar më</mat-label>
+                    <input matInput
+                           formControlName="date_created"
+                           type="date">
+                </mat-form-field>
             </div>
 
             <div class="button-container">
@@ -89,13 +95,19 @@
                     <input matInput
                            formControlName="description">
                 </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Krijuar më</mat-label>
+                    <input matInput
+                           formControlName="date_created"
+                           type="date">
+                </mat-form-field>
             </div>
 
             <div class="button-container">
                 <button mat-raised-button
                         color="primary"
                         (click)="addClient()">
-                    Ruaj
+                    Shto
                 </button>
             </div>
         </form>

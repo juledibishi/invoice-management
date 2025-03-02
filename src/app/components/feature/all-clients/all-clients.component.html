@@ -6,7 +6,7 @@
             <button mat-raised-button
                     color="primary"
                     class="admin-btn"
-                    (click)="admin()">Admin</button>
+                    (click)="admin()">Profili</button>
             <button mat-raised-button
                     color="warn"
                     class="logout-btn"
@@ -22,7 +22,7 @@
                 <span class="card-title">Numri i Klientëve</span>
                 <mat-icon>group</mat-icon>
             </div>
-            <h3>{{clientCount }}</h3>
+            <h3>{{filteredClients.length }}</h3>
             <div class="progress-bar">
                 <div class="progress"
                      style="width: 100%; background-color: #1e88e5;"></div>
@@ -62,25 +62,23 @@
         <mat-form-field class="example-full-width">
             <input matInput
                    placeholder="Emri i Klientit"
-                   [(ngModel)]="searchText">
+                   [(ngModel)]="searchText"
+                   (input)="filterClients()">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <input matInput
+                   placeholder="Viti"
+                   [(ngModel)]="selectedYear"
+                   (input)="filterClients()">
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
             <mat-label>Filtrimi</mat-label>
-            <mat-select [(value)]="filterType">
+            <mat-select [(value)]="filterType"
+                        (selectionChange)="filterClients()">
                 <mat-option value="all">Të gjithë</mat-option>
                 <mat-option value="debt">Klientë me Borxh</mat-option>
-                <mat-option value="paid">Klientë që kanë paguar</mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-            <mat-label>Filtrimi nga Viti</mat-label>
-            <mat-select [(value)]="selectedYear"
-                        (selectionChange)="onYearChange()">
-                <mat-option value="2024">2024</mat-option>
-                <mat-option value="2025">2025</mat-option>
-                <mat-option value="all">Të gjithë</mat-option>
             </mat-select>
         </mat-form-field>
     </div>
@@ -98,13 +96,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let client of clients | filter:searchText | filterDebt:filterType | filterByYear:selectedYear ">
+            <tr *ngFor="let client of filteredClients">
                 <td style="background-color: #ffcccb;"
-                    *ngIf="client.debt !== '0'">
+                    *ngIf="client.debt !== 0">
                     {{ client.name }}
                 </td>
                 <td style="background-color: #ffffff;"
-                    *ngIf="client.debt === '0'">
+                    *ngIf="client.debt === 0">
                     {{ client.name }}
                 </td>
                 <td>{{ client.surname }}</td>
@@ -113,8 +111,8 @@
                 <td> <a [href]="'tel:' + client.phone"
                        style="text-decoration: none;color:black">{{ client.phone }}</a></td>
                 <td class="description-cell">{{ client.description }}</td>
-                <td>{{ client.created_at | date:'dd/MM/yyyy HH:mm'}}</td>
-                <td class="icons-style">
+                <td>{{ client.date_created| date:'dd/MM/yyyy'}}</td>
+                <td>
                     <button mat-icon-button
                             color="primary"
                             (click)="editClient(client.id!)">

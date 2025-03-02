@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IClient } from '../../../models/client.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-invoice-print',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './invoice-print.component.html',
   styleUrls: ['./invoice-print.component.scss']
 })

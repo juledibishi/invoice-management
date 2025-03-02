@@ -2,9 +2,9 @@ export interface IClient {
     id?: string;
     name: string;
     surname: string;
-    debt: string;
-    payment: string;
+    debt: number;
+    payment: number;
     description: string;
     phone: string;
-    created_at?: string;
+    date_created: string;
 }

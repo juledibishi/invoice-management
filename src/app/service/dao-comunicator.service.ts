@@ -10,8 +10,11 @@ import { IClient } from '../models/client.model';
 export class DaoComunicatorService {
   supabase = createClient(environment.supabase.url, environment.supabase.key);
   currentUser = signal<{ email: string; username: string } | null>(null);
+  tableName = signal('');
 
-  constructor() { }
+  constructor() {
+    this.tableName.set(localStorage.getItem('client')!)
+  }
 
   register(email: string, username: string, password: string): Observable<AuthResponse> {
     const promise = this.supabase.auth.signUp({
@@ -45,7 +48,9 @@ export class DaoComunicatorService {
   }
 
   getClients(): Observable<IClient[]> {
-    const promise = this.supabase.from('Client').select('*');
+    console.log(this.tableName);
+
+    const promise = this.supabase.from(this.tableName()).select('*');
     return from(promise).pipe(
       map((response) => {
         return response.data ?? [];
@@ -55,7 +60,7 @@ export class DaoComunicatorService {
 
   async saveClient(client: IClient) {
     const { error } = await this.supabase
-      .from('Client')
+      .from(this.tableName())
       .insert([client])
       .select();
 
@@ -64,15 +69,8 @@ export class DaoComunicatorService {
 
   async updateClient(client: IClient) {
     const { data, error } = await this.supabase
-      .from('Client')
-      .update({
-        name: client.name,
-        description: client.description,
-        surname: client.surname,
-        payment: client.payment,
-        debt: client.debt,
-        phone: client.phone
-      })
+      .from(this.tableName())
+      .update(client)
       .eq('id', client.id)
       .select();
 
@@ -81,7 +79,7 @@ export class DaoComunicatorService {
 
   async deleteClient(client: IClient) {
     const { error } = await this.supabase
-      .from('Client')
+      .from(this.tableName())
       .delete()
       .eq('id', client)
   }
