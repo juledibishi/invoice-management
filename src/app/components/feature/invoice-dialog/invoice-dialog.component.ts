@@ -43,7 +43,7 @@ export class InvoiceDialogComponent implements OnInit {
   printInvoice() {
     const invoiceData = {
       client: this.clientData,
-      today: new Date().toLocaleDateString(),
+      today: new Date().toLocaleDateString('en-GB'),
       items: this.invoiceForm.value.items,
       total: this.getTotal(),
       discount: this.discountForm.value,
