@@ -1,9 +1,8 @@
 export interface IUser {
-    username: string;
     email: string;
-    password: string;
-}
-export interface IUserMetaData {
-    email: string;
+    email_verified?: boolean;
+    phone: string;
+    phone_verified?: boolean;
+    sub?: string;
     username: string;
 }

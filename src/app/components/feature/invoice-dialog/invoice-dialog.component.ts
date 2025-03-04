@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Inject, OnInit, signal, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IClient } from '../../../models/client.model';
+import { DaoComunicatorService } from '../../../service/dao-comunicator.service';
 
 @Component({
   selector: 'app-invoice-dialog',
@@ -14,9 +15,13 @@ import { IClient } from '../../../models/client.model';
 export class InvoiceDialogComponent implements OnInit {
   invoiceForm: FormGroup;
   clientData!: IClient;
+  dao = inject(DaoComunicatorService)
   today: Date = new Date();
   @ViewChild('invoice') invoiceElement!: ElementRef;
 
+  userPhone: string = '';
+  userName: string = '';
+  userEmail: string = '';
   totalPrice: number = 0;
   totalPriceAfterDiscount: number = 0;
   discountForm = new FormControl(0);
@@ -29,6 +34,14 @@ export class InvoiceDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dao.supabase.auth.getUser().then(user => {
+      this.userPhone = user.data.user?.user_metadata['phone']
+      this.userName = user.data.user?.user_metadata['username']
+      this.userEmail = user.data.user?.user_metadata['email']
+    })
+
+    console.log(this.userName);
+
     this.clientData = this.data!;
 
     this.invoiceForm.valueChanges.subscribe(() => {
@@ -54,15 +67,13 @@ export class InvoiceDialogComponent implements OnInit {
     let summaryRow = '';
     if (invoiceData.discount) {
       discountRow = `
+    <tr>
+  <td class="total-label">Zbritje</td>
+  <td colspan="6">${invoiceData.discount.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} %</td>
+</tr>
         <tr>
-          <td colspan="3"></td>
-          <td class="total-label">Zbritje (%) :</td>
-          <td>${invoiceData.discount} %</td>
-        </tr>
-        <tr>
-          <td colspan="3"></td>
-          <td class="total-label">Totali pas Zbritjes:</td>
-          <td>${invoiceData.totalPriceAfterDiscount} €</td>
+          <td class="total-label">Totali pas Zbritjes</td>
+<td colspan="8">${invoiceData.totalPriceAfterDiscount.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €</td>
         </tr>
       `;
     }
@@ -79,14 +90,15 @@ export class InvoiceDialogComponent implements OnInit {
       <div class="container">
         <section class="jumbotron">
             <div class="left-side">
-                <h2>Oferta për:</h2>
+                <h2>Ofert:</h2>
                 <p>Emri: <b>${invoiceData.client.name}</b></p>
                 <p>Mbiemri: <b>${invoiceData.client.surname}</b></p>
                 <p>Telefoni: <b>${invoiceData.client.phone}</b></p>
             </div>
     
             <div class="right-side">
-                <img src="assets/img/romebel-1.png" alt="Company Logo" class="company-logo" />
+                <p><strong>Emri:</strong> ${this.userName}</p>
+                 <p><strong>Tel:</strong>${this.userPhone}</p>
                 <p><strong>Data:</strong> ${invoiceData.today}</p>
             </div>
         </section>
@@ -94,52 +106,50 @@ export class InvoiceDialogComponent implements OnInit {
         <table class="table">
             <thead>
                 <tr>
+                    <th>Nr.</th>
                     <th>Artikulli</th>
                     <th>Përshkrimi</th>
                     <th>Sasia</th>
-                    <th>Çmimi</th>
-                    <th>Gjithësej</th>
+                    <th>Çmimi (€)</th>
+                    <th>Gjithësej (€)</th>
                 </tr>
             </thead>
             <tbody>
-                ${invoiceData.items.map((item: any) => `
+                ${invoiceData.items.map((item: any, i: number) => `
                   <tr>
+                    <td style="text-align:center;">${i + 1}</td>
                     <td>${item.name}</td>
                     <td>${item.description}</td>
-                    <td>${item.qty} ${item.unit}</td>
-                    <td>${Number(item.price).toFixed(2)} €</td>
-                    <td>${(item.qty * item.price).toFixed(2)} €</td>
+                   <td>${item.qty.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${item.unit}</td>
+                   <td>${Number(item.price).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td>${(item.qty * item.price).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                   </tr>
                 `).join('')}
-                <tr>
-                    <td colspan="3"></td>
-                    <td class="total-label">Total :</td>
-                    <td>${Number(invoiceData.total).toFixed(2)} €</td>
-                </tr>
                 
-                ${discountRow}
+                
+              
             </tbody>
         </table>
+        <table class="table-discount"> 
+              <tr>
+                  <td class="total-label">Total</td>
+                    <td>${Number(invoiceData.total).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €</td>
+                </tr>
+         ${discountRow}
+         </table>
         <br>
                 ${summaryRow}
         <div class="signature">
             <div>
-                <span>Nënshkrim</span><br><br><br>
+                <span>Pronari</span><br><br><br>
                 <span>_______________________</span>
             </div>
             <div>
-                <span>Nënshkrim</span><br><br><br>
+                <span>Klienti</span><br><br><br>
                 <span>_______________________</span>
             </div>
         </div>
       </div>
-
-       <!-- Footer Section -->
-    <footer class="footer">
-      <p><strong>Tel:</strong>070 603 197 / 071 784 886</p>
-      <p><strong>Email:</strong> romebel1998@gmail.com</p>
-      <p><strong>Address:</strong> Gostivarska, Tetovo 1220</p>
-    </footer>
     `;
 
     // Open a new print window
@@ -189,6 +199,17 @@ export class InvoiceDialogComponent implements OnInit {
               }
               .table th {
                   background-color: #f2f2f2;
+              }
+                  .table-discount{
+                    margin-top: 20px;
+                     border-collapse: collapse;
+                  display: flex;
+               justify-content: flex-end;
+                  }
+                  .table-discount td {
+                  border: 1px solid #000;
+                  padding: 8px;
+                  text-align: left;
               }
               .signature {
                   display: flex;
@@ -250,8 +271,6 @@ export class InvoiceDialogComponent implements OnInit {
   }
 
   getTotal(): number {
-    console.log(123);
-
     return this.items.controls.reduce((total, item) => {
       const qty = item.get('qty')?.value || 0;
       const price = item.get('price')?.value || 0;

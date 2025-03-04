@@ -30,6 +30,7 @@ export class EditUserComponent implements OnInit {
   userForm = this.fb.nonNullable.group({
     username: ['', Validators.required],
     email: ['', Validators.required],
+    phone: ['', Validators.required],
   })
 
 
@@ -39,7 +40,8 @@ export class EditUserComponent implements OnInit {
     if (this.data) {
       this.userForm.patchValue({
         username: this.data.username,
-        email: this.data.email
+        email: this.data.email,
+        phone: this.data.phone,
       })
     }
   }
@@ -47,7 +49,7 @@ export class EditUserComponent implements OnInit {
 
   saveClient() {
     if (this.userForm.valid) {
-      this.dao.updateUser(this.userForm.value.email!, this.userForm.value.username!).subscribe(res => {
+      this.dao.updateUser(this.userForm.value.email!, this.userForm.value.username!, this.userForm.value.phone!).subscribe(res => {
         if (res.error) {
           this.toast.success(res.error.message);
         }

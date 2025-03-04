@@ -37,19 +37,18 @@ export class DaoComunicatorService {
     return from(promise);
   }
 
-  updateUser(email: string, username: string) {
+  updateUser(email: string, username: string, phone: string) {
     const promise = this.supabase.auth.updateUser({
-      email,
       data: {
-        username
+        username,
+        email,
+        phone,
       }
     })
     return from(promise)
   }
 
   getClients(): Observable<IClient[]> {
-    console.log(this.tableName);
-
     const promise = this.supabase.from(this.tableName()).select('*');
     return from(promise).pipe(
       map((response) => {
