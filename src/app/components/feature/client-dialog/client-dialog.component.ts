@@ -31,9 +31,9 @@ export class ClientDialogComponent implements OnInit {
 
   clientForm = this.fb.nonNullable.group({
     name: ['', Validators.required],
-    description: ['', Validators.required],
-    debt: [0, Validators.required],
-    payment: [0, Validators.required],
+    description: [''],
+    debt: [0],
+    payment: [0],
     surname: ['', Validators.required],
     phone: ['', Validators.required],
     date_created: ['', Validators.required]

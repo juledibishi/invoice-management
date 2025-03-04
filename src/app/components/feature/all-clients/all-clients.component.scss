@@ -68,12 +68,10 @@
 .product-table th,
 .product-table td {
     padding: 8px;
-    /* Reduce padding */
     text-align: left;
     font-size: 14px;
-    /* Reduce font size slightly */
-    white-space: nowrap;
-    /* Prevent text from wrapping */
+    white-space: normal;
+
 }
 
 .product-table th {
@@ -85,8 +83,8 @@
     text-align: left;
     font-size: 14px;
     border: 1px solid #ddd;
-    // white-space: normal;
     word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Reduce button size in table */
@@ -117,9 +115,18 @@
 
 .description-cell {
     width: 150px;
-    word-break: break-word;
+    /* Ensure the width is set */
+    word-wrap: break-word;
+    /* Allow text to break inside the cell */
     white-space: normal;
+    /* Allow wrapping within the cell */
+    overflow-wrap: break-word;
+    /* Ensure words are broken when needed */
 }
+
+
+
+
 
 @media (max-width: 768px) {
     .product-container {
