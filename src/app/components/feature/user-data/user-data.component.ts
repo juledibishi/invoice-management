@@ -57,7 +57,6 @@ export class UserDataComponent {
       width: '70vw',
       data: this.userData
     })
-    console.log(this.userData);
 
     dialogRef.afterClosed().subscribe(x => {
       this.userForm.value.username = x.data.user.user_metadata['username']

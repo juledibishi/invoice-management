@@ -40,8 +40,6 @@ export class InvoiceDialogComponent implements OnInit {
       this.userEmail = user.data.user?.user_metadata['email']
     })
 
-    console.log(this.userName);
-
     this.clientData = this.data!;
 
     this.invoiceForm.valueChanges.subscribe(() => {
