@@ -140,6 +140,7 @@ body {
 .d-flex input,
 .d-flex select {
     width: 50%;
+    padding: 5px;
 }
 
 .print-button {
@@ -164,44 +165,57 @@ body {
     }
 
     .company-logo {
-        width: 80px;
+        width: 100px;
+        /* Make logo slightly bigger */
     }
 
     .table {
-        font-size: 12px;
+        font-size: 14px;
+        /* Increase readability */
     }
 
     .table th,
     .table td {
-        padding: 4px 6px;
+        padding: 6px 8px;
+        /* More spacing */
     }
 
     .btn {
-        padding: 4px 8px;
-        font-size: 12px;
+        padding: 6px 12px;
+        /* Bigger button for better touch */
+        font-size: 14px;
     }
 
+    /* Fix quantity & unit alignment */
     .d-flex {
-        flex-direction: column;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        width: 150px;
     }
 
     .d-flex input,
     .d-flex select {
-        width: 100%;
+        flex: 1;
+        /* Makes them equal width */
+        min-width: 45%;
     }
 
     .d-flex input {
-        padding: 12px;
-        font-size: 14px;
+        padding: 10px;
+        font-size: 16px;
     }
 
+    /* Improve signature layout */
     .signature {
+        display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 1rem;
     }
 
     .signature div {
         text-align: center;
-        margin-bottom: 1rem;
+        width: 100%;
     }
 }
