@@ -124,11 +124,21 @@
     /* Ensure words are broken when needed */
 }
 
+td,
+th {
+    white-space: nowrap;
+    /* Prevents breaking words */
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+td a {
+    white-space: nowrap;
+}
 
 
 
-
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     .product-container {
         width: 90%;
         /* Ensures content fits well on smaller screens */
@@ -175,4 +185,16 @@
         display: block;
         overflow-x: auto;
     }
+
+    .product-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .product-table th,
+    .product-table td {
+        min-width: 120px;
+    }
+
 }
