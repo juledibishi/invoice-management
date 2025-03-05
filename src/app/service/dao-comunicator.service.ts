@@ -16,6 +16,12 @@ export class DaoComunicatorService {
     this.tableName.set(localStorage.getItem('client')!)
   }
 
+  checkAuth(): Observable<boolean> {
+    const promise = this.supabase.auth.getSession();
+    return from(promise)
+      .pipe(map(response => !!response.data.session))
+  }
+
   register(email: string, username: string, password: string): Observable<AuthResponse> {
     const promise = this.supabase.auth.signUp({
       email,
@@ -37,12 +43,13 @@ export class DaoComunicatorService {
     return from(promise);
   }
 
-  updateUser(email: string, username: string, phone: string) {
+  updateUser(email: string, username: string, phone: string, address: string) {
     const promise = this.supabase.auth.updateUser({
       data: {
         username,
         email,
         phone,
+        address
       }
     })
     return from(promise)

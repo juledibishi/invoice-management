@@ -22,6 +22,7 @@ export class InvoiceDialogComponent implements OnInit {
   userPhone: string = '';
   userName: string = '';
   userEmail: string = '';
+  userAddress: string = '';
   totalPrice: number = 0;
   totalPriceAfterDiscount: number = 0;
   discountForm = new FormControl(0);
@@ -38,6 +39,7 @@ export class InvoiceDialogComponent implements OnInit {
       this.userPhone = user.data.user?.user_metadata['phone']
       this.userName = user.data.user?.user_metadata['username']
       this.userEmail = user.data.user?.user_metadata['email']
+      this.userAddress = user.data.user?.user_metadata['address']
     })
 
     this.clientData = this.data!;
@@ -97,6 +99,7 @@ export class InvoiceDialogComponent implements OnInit {
             <div class="right-side">
                 <p><strong>Emri:</strong> ${this.userName}</p>
                  <p><strong>Tel:</strong>${this.userPhone}</p>
+                 <p><strong>Adresa:</strong>${this.userAddress}</p>
                 <p><strong>Data:</strong> ${invoiceData.today}</p>
             </div>
         </section>

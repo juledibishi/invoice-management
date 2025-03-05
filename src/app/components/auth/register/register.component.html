@@ -4,10 +4,9 @@
         <form [formGroup]="form">
             <mat-form-field appearance="outline"
                             class="full-width">
-                <mat-label>Username</mat-label>
+                <mat-label>Emri</mat-label>
                 <input matInput
                        type="text"
-                       placeholder="Enter your username"
                        formControlName="username" />
             </mat-form-field>
 
@@ -16,29 +15,45 @@
                 <mat-label>Email</mat-label>
                 <input matInput
                        type="text"
-                       placeholder="Enter your email"
                        formControlName="email" />
             </mat-form-field>
 
+
+            <!-- <mat-form-field appearance="outline"
+                            class="full-width">
+                <mat-label>Telefon</mat-label>
+                <input matInput
+                       type="text"
+                       formControlName="phone" />
+            </mat-form-field> -->
+
+
+            <!-- <mat-form-field appearance="outline"
+                            class="full-width">
+                <mat-label>Adresa</mat-label>
+                <input matInput
+                       type="text"
+                       formControlName="address" />
+            </mat-form-field> -->
+
             <mat-form-field appearance="outline"
                             class="full-width">
-                <mat-label>Password</mat-label>
+                <mat-label>Fjalëkalimi</mat-label>
                 <input matInput
                        type="password"
-                       placeholder="Enter your password"
                        formControlName="password" />
             </mat-form-field>
 
             <button mat-raised-button
                     color="primary"
                     class="full-width"
-                    (click)="register()">Register</button>
+                    (click)="register()">Regjistrohu</button>
         </form>
 
-        <div class="redirect-container">
+        <!-- <div class="redirect-container">
             <span>Already have an account?</span>
             <a routerLink="/login"
                class="redirect-link">Login</a>
-        </div>
+        </div> -->
     </mat-card>
 </div>

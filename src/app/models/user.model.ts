@@ -5,4 +5,5 @@ export interface IUser {
     phone_verified?: boolean;
     sub?: string;
     username: string;
+    address: string;
 }

@@ -30,6 +30,7 @@ export class UserDataComponent {
     username: ['', Validators.required],
     email: ['', Validators.required],
     phone: ['', Validators.required],
+    address: ['', Validators.required],
   })
 
   userData!: IUser;
@@ -47,6 +48,7 @@ export class UserDataComponent {
           username: this.userData.username,
           email: this.userData.email,
           phone: this.userData.phone,
+          address: this.userData.address
         })
       }
     });
@@ -59,11 +61,13 @@ export class UserDataComponent {
     })
 
     dialogRef.afterClosed().subscribe(x => {
-      this.userForm.value.username = x.data.user.user_metadata['username']
-      this.userForm.value.email = x.data.user.user_metadata['email']
-      this.userForm.value.phone = x.data.user.user_metadata['phone']
+      if (x) {
+        this.userForm.value.username = x.data.user.user_metadata['username']
+        this.userForm.value.email = x.data.user.user_metadata['email']
+        this.userForm.value.phone = x.data.user.user_metadata['phone']
+        this.userForm.value.address = x.data.user.user_metadata['address']
+      }
     })
-
   }
 
   logout() {

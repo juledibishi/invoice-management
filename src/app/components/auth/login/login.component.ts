@@ -54,7 +54,7 @@ export class LoginComponent {
             this.dao.tableName.set('JuledClient')
             localStorage.setItem('client', 'JuledClient')
           }
-          this.router.navigateByUrl('user-data')
+          this.router.navigateByUrl('all-clients')
         }
       })
   }

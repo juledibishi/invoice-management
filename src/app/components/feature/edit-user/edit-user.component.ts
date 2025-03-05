@@ -31,6 +31,7 @@ export class EditUserComponent implements OnInit {
     username: ['', Validators.required],
     email: ['', Validators.required],
     phone: ['', Validators.required],
+    address: ['', Validators.required],
   })
 
 
@@ -42,6 +43,7 @@ export class EditUserComponent implements OnInit {
         username: this.data.username,
         email: this.data.email,
         phone: this.data.phone,
+        address: this.data.address,
       })
     }
   }
@@ -49,7 +51,7 @@ export class EditUserComponent implements OnInit {
 
   saveClient() {
     if (this.userForm.valid) {
-      this.dao.updateUser(this.userForm.value.email!, this.userForm.value.username!, this.userForm.value.phone!).subscribe(res => {
+      this.dao.updateUser(this.userForm.value.email!, this.userForm.value.username!, this.userForm.value.phone!, this.userForm.value.address!).subscribe(res => {
         if (res.error) {
           this.toast.success(res.error.message);
         }

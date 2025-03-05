@@ -1,14 +1,20 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { DaoComunicatorService } from '../../service/dao-comunicator.service';
+import { map } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router)
-  const token = localStorage.getItem('sb-pjaabxskxtozbuipvytp-auth-token');
+  const dao = inject(DaoComunicatorService)
 
-  if (token) {
-    return true;
-  } else {
-    router.navigate(['login']);
-    return false;
-  }
+  return dao.checkAuth().pipe(
+    map(valid => {
+      if (valid) {
+        return true;
+      } else {
+        router.navigate(['login']);
+        return false;
+      }
+    })
+  );
 };
