@@ -36,26 +36,28 @@ export class LoginComponent {
 
   login() {
     const rawForm = this.loginForm.getRawValue();
+    if (this.loginForm.valid) {
+      this.dao.login(rawForm.email, rawForm.password)
+        .subscribe((result) => {
+          if (result.error) {
+            this.toast.danger('Email ose fjalëkalimi janë të pasakta!');
+          } else {
+            if (rawForm.email === 'bujaminmustafi0@gmail.com') {
+              this.dao.tableName.set('BujaminClient')
+              localStorage.setItem('client', 'BujaminClient')
+            }
+            if (rawForm.email === 'nuri.ramadani2025@gmail.com') {
+              this.dao.tableName.set('NuriClient')
+              localStorage.setItem('client', 'NuriClient')
+            }
+            if (rawForm.email === 'juled.ibishi@gmail.com') {
+              this.dao.tableName.set('JuledClient')
+              localStorage.setItem('client', 'JuledClient')
+            }
+            this.router.navigateByUrl('all-clients')
+          }
+        })
+    }
 
-    this.dao.login(rawForm.email, rawForm.password)
-      .subscribe((result) => {
-        if (result.error) {
-          this.toast.danger('Email ose fjalëkalimi janë të pasakta!');
-        } else {
-          if (rawForm.email === 'bujaminmustafi0@gmail.com') {
-            this.dao.tableName.set('BujaminClient')
-            localStorage.setItem('client', 'BujaminClient')
-          }
-          if (rawForm.email === 'nuri.ramadani2025@gmail.com') {
-            this.dao.tableName.set('NuriClient')
-            localStorage.setItem('client', 'NuriClient')
-          }
-          if (rawForm.email === 'juled.ibishi@gmail.com') {
-            this.dao.tableName.set('JuledClient')
-            localStorage.setItem('client', 'JuledClient')
-          }
-          this.router.navigateByUrl('all-clients')
-        }
-      })
   }
 }
